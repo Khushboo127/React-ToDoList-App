@@ -6,6 +6,10 @@ function App() {
   const [todos, setTodos] = useState([])
   const [inputValue, setInputValue] = useState("")
 
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id))
+  }
+
   //  Added addTodo function with validation
   const addTodo = () => {
     if (inputValue.trim() === "") {
@@ -62,6 +66,11 @@ function App() {
       <ToDoList
         todos={todos}
         onToggleComplete={toggleComplete}
+      />
+      <ToDoList
+        todos={todos}
+        onToggleComplete={toggleComplete}
+        onDelete={deleteTodo}
       />
     </div>
   )

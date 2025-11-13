@@ -14,6 +14,14 @@ function ToDoItem({ todo, onToggleComplete }) {
             >
                 {todo.text}
             </span>
+
+            {/*  Added Delete button */}
+            <button
+                onClick={() => onDelete(todo.id)}
+                className="delete-btn"
+            >
+                Delete
+            </button>
         </div>
     )
 }
