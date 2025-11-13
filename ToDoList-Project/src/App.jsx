@@ -6,9 +6,9 @@ function App() {
   const [todos, setTodos] = useState([])
   const [inputValue, setInputValue] = useState("")
 
-  const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id))
-  }
+  //  Added editing state management
+  const [editingId, setEditingId] = useState(null)
+  const [editingText, setEditingText] = useState("")
 
   //  Added addTodo function with validation
   const addTodo = () => {
@@ -35,6 +35,9 @@ function App() {
       )
     )
   }
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id))
+  }
 
   //  Added handleKeyPress for Enter key
   const handleKeyPress = (e) => {
@@ -42,7 +45,33 @@ function App() {
       addTodo()
     }
   }
+  //  Added startEdit function
+  const startEdit = (id, text) => {
+    setEditingId(id)
+    setEditingText(text)
+  }
 
+  //  Added saveEdit function
+  const saveEdit = (id) => {
+    if (editingText.trim() === "") {
+      alert("Task cannot be empty!")
+      return
+    }
+
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, text: editingText } : todo
+      )
+    )
+    setEditingId(null)
+    setEditingText("")
+  }
+
+  //  Added cancelEdit function
+  const cancelEdit = () => {
+    setEditingId(null)
+    setEditingText("")
+  }
   return (
     <div className="app-container">
       <Header />
@@ -61,16 +90,16 @@ function App() {
           Add Task
         </button>
       </div>
-
-      {/*  Passing toggleComplete function as props */}
-      <ToDoList
-        todos={todos}
-        onToggleComplete={toggleComplete}
-      />
       <ToDoList
         todos={todos}
         onToggleComplete={toggleComplete}
         onDelete={deleteTodo}
+        onEdit={startEdit}
+        onSaveEdit={saveEdit}
+        onCancelEdit={cancelEdit}
+        editingId={editingId}
+        editingText={editingText}
+        setEditingText={setEditingText}
       />
     </div>
   )
